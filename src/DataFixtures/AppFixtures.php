@@ -5,11 +5,12 @@ namespace App\DataFixtures;
 use App\Entity\Team;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Faker\Factory;
 
-class AppFixtures extends Fixture
+class AppFixtures extends Fixture implements FixtureGroupInterface
 {
 
     private $passwordHasher;
@@ -58,5 +59,10 @@ class AppFixtures extends Fixture
             $manager->persist($user[$i]);
         }
         $manager->flush();
+    }
+
+    public static function getGroups(): array
+    {
+        return ['user_team'];
     }
 }
