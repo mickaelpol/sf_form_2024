@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\PostsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PostsRepository::class)]
@@ -26,7 +27,7 @@ class Posts
     /**
      * Many Posts have Many Tags.
      */
-    #[ORM\ManManyToMany(targetEntity: Tags::class, inversedBy: 'posts')]
+    #[ORM\ManyToMany(targetEntity: Tags::class, inversedBy: 'posts')]
     private Collection $fk_tags;
 
     public function __construct()
