@@ -14,11 +14,13 @@
     <body>
 
     {% set current_route = app.request.attributes.get('_route') %}
-    {% if current_route == 'app_home' %}
+    {% if current_route == 'app_home' and not app.user %}
         <a href="{{ path('app_login') }}">Connexion</a>
         <a href="{{ path('admin_login') }}">Connexion Admin</a>
     {% elseif app.user and current_route != 'app_login' and current_route != 'admin_login' %}
         <a href="{{ path('app_logout') }}">Se déconnecter</a>
+        <a href="{{ path('app_posts_index') }}">Post</a>
+        <a href="{{ path('app_tags_index') }}">Tags</a>
     {% elseif not app.user and current_route != 'app_login' %}
         <a href="{{ path('app_login') }}">Connexion</a>
     {% elseif not app.user and current_route != 'admin_login' %}

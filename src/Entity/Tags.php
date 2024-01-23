@@ -20,7 +20,7 @@ class Tags
     /**
      * Many Tags have Many Posts.
      */
-    #[ManyToMany(targetEntity: Posts::class, mappedBy: 'tags')]
+    #[ManyToMany(targetEntity: Posts::class, mappedBy: 'fk_tags')]
     private Collection $posts;
 
     public function __construct()
@@ -48,8 +48,22 @@ class Tags
         return $this->posts;
     }
 
-    public function setPosts(Collection $posts): void
+    public function addPost(Posts $post): static
     {
-        $this->posts = $posts;
+        if (!$this->posts->contains($post)) {
+            $this->posts->add($post);
+            $post->addFkTag($this);
+        }
+
+        return $this;
+    }
+
+    public function removePost(Posts $post): static
+    {
+        if ($this->posts->removeElement($post)) {
+            $post->removeFkTag($this);
+        }
+
+        return $this;
     }
 }

@@ -26,13 +26,12 @@ class Posts
     /**
      * Many Posts have Many Tags.
      */
-    #[ManyToMany(targetEntity: Tags::class, inversedBy: 'posts')]
-    #[JoinTable(name: 'tags_posts')]
-    private Collection $tags;
+    #[ORM\ManManyToMany(targetEntity: Tags::class, inversedBy: 'posts')]
+    private Collection $fk_tags;
 
     public function __construct()
     {
-        $this->tags = new ArrayCollection();
+        $this->fk_tags = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -70,14 +69,28 @@ class Posts
         $this->picture = $picture;
     }
 
-    public function getTags(): Collection
+    /**
+     * @return Collection<int, Tags>
+     */
+    public function getFkTags(): Collection
     {
-        return $this->tags;
+        return $this->fk_tags;
     }
 
-    public function setTags(Collection $tags): void
+    public function addFkTag(Tags $fkTag): static
     {
-        $this->tags = $tags;
+        if (!$this->fk_tags->contains($fkTag)) {
+            $this->fk_tags->add($fkTag);
+        }
+
+        return $this;
+    }
+
+    public function removeFkTag(Tags $fkTag): static
+    {
+        $this->fk_tags->removeElement($fkTag);
+
+        return $this;
     }
 
 }
