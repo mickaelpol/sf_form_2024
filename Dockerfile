@@ -17,8 +17,16 @@ RUN docker-php-ext-install \
 # Installer Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+# Installer Node.js et npm
+RUN curl -fsSL https://deb.nodesource.com/setup_current.x | bash - \
+    && apt-get install -y nodejs
+
+# Vérifier l'installation de Node.js et npm
+RUN node -v
+RUN npm -v
+
 # Définir le document root
-ENV APACHE_DOCUMENT_ROOT /var/www/html/project_0/public
+ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 
 # Mettre à jour la configuration d'Apache pour utiliser le nouveau document root
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
